@@ -1,11 +1,24 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext(null);
+interface User {
+  email: string;
+  name: string;
+}
 
-export const AuthProvider = ({ children }) => {
+interface AuthContextType {
+  isAuthenticated: boolean;
+  user: User | null;
+  login: (email: string, password: string) => void;
+  signup: (fullName: string, email: string, password: string) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
   // Check for existing auth state in localStorage on mount
@@ -18,9 +31,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (email, password) => {
+  const login = (email: string, password: string) => {
     // Mock login - just simulate success
-    const mockUser = {
+    const mockUser: User = {
       email: email,
       name: email.split('@')[0]
     };
@@ -31,9 +44,9 @@ export const AuthProvider = ({ children }) => {
     navigate('/');
   };
 
-  const signup = (fullName, email, password) => {
+  const signup = (fullName: string, email: string, password: string) => {
     // Mock signup - just simulate success
-    const mockUser = {
+    const mockUser: User = {
       email: email,
       name: fullName
     };
