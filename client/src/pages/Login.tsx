@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Redirect if already authenticated
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/');
     }
