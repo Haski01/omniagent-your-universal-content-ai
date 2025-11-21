@@ -1,7 +1,8 @@
 // /middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   try {
     // Try cookie first
     const token = req.cookies?.token;
@@ -15,9 +16,15 @@ export const protect = (req, res, next) => {
     }
     // console.log(decoded);
 
-    req.userId = decoded.id;
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized - user not found" });
+    }
+
+    req.user = user;
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Not authorized, token invalid" });
+  } catch (error) {
+    console.error("Error in protectedRoute route middleware:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

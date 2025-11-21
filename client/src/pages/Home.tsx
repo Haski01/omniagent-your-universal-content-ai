@@ -46,10 +46,10 @@ const Home = () => {
             </div>
           </div>
         );
-      
+
       case "PDF, Image & More Files":
         return <FileUploadZone />;
-      
+
       case "Audio, Video":
         return (
           <FileUploadZone
@@ -58,7 +58,7 @@ const Home = () => {
             supportedFormats="Audio, Video"
           />
         );
-      
+
       default:
         return null;
     }

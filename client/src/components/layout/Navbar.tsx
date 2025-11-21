@@ -2,20 +2,32 @@ import { Menu, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "../../context/AuthContext";
 
 interface NavbarProps {
   onToggleSidebar: () => void;
 }
 
+import useLogout from "../../hooks/useLogout.js"
+import { useAuthContext } from "../../context/AuthContext.jsx"
+
 export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
   const { theme, setTheme } = useTheme();
-  const { isAuthenticated, logout } = useAuth();
+
+  const { loading, logout } = useLogout()
+
+  const { authUser } = useAuthContext()
+  const isAuth = Boolean(authUser) // true false
+
   const navigate = useNavigate();
 
   return (
     <nav className="h-14 border-b border-border bg-card flex items-center justify-between px-4">
+
+      {/* NAVBAR LEFTSIDE */}
+      {/* logo and sidebar togglebutton */}
       <div className="flex items-center gap-3">
+
+        {/* toggle sidebar button */}
         <Button
           variant="ghost"
           size="icon"
@@ -27,7 +39,10 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
         <h1 className="text-xl font-bold text-foreground">OmniAgent</h1>
       </div>
 
+      {/* NAVBAR RIGHT SIDE */}
       <div className="flex items-center gap-2">
+
+        {/* THEME BUTTON */}
         <Button
           variant="ghost"
           size="icon"
@@ -40,8 +55,10 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
             <Moon className="h-5 w-5" />
           )}
         </Button>
-        
-        {!isAuthenticated ? (
+
+        {/* SIGNUP LOGIN AND LOGOUT BUTTON */}
+        {!isAuth ? (
+          // singup & login button
           <>
             <Button
               variant="ghost"
@@ -56,6 +73,7 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
             </Button>
           </>
         ) : (
+          // logout button
           <Button
             variant="outline"
             onClick={logout}
