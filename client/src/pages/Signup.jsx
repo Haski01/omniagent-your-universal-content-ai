@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,11 +23,8 @@ const Signup = () => {
   // signup custom hook
   const { signup, loading } = useSignup();
 
-  // const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Signup attempt:", signupData);
     await signup(signupData);
   };
 

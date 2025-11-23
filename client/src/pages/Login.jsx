@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,11 +20,8 @@ const Login = () => {
   });
   const { loading, login } = useLogin();
 
-  // const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(loginData);
     login(loginData);
   };
 
