@@ -1,22 +1,17 @@
 import { Upload, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { toast } from "sonner";
+import usePdfUpload from "@/hooks/usePdfUpload";
 
-interface FileUploadZoneProps {
-  accept?: string;
-  maxSize?: string;
-  supportedFormats?: string;
-}
-
-export const FileUploadZone = ({ 
-  accept = ".pdf,.jpg,.png,.ppt,.doc,.txt",
+export const FileUploadZone = ({
+  accept = ".pdf",
   maxSize = "30MB",
-  supportedFormats = "PDF, Image, PPT, Word, TXT"
-}: FileUploadZoneProps) => {
+  supportedFormats = "PDF",
+}) => {
   const [isDragging, setIsDragging] = useState(false);
+  const { uploadFiles, loading } = usePdfUpload();
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
@@ -25,23 +20,22 @@ export const FileUploadZone = ({
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
+
     const files = Array.from(e.dataTransfer.files);
-    handleFiles(files);
+
+    uploadFiles(files); // 🔥 send to backend
   };
 
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInput = (e) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
-      handleFiles(files);
-    }
-  };
 
-  const handleFiles = (files: File[]) => {
-    console.log("Files uploaded:", files);
-    toast.success(`${files.length} file(s) ready for processing`);
+      console.log('user uploade file: ', files);
+      uploadFiles(files); // 🔥 send to backend
+    }
   };
 
   return (
@@ -49,38 +43,36 @@ export const FileUploadZone = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-        isDragging ? "border-primary bg-primary/5" : "border-border"
-      }`}
+      className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${isDragging ? "border-primary bg-primary/5" : "border-border"
+        }`}
     >
       <div className="flex flex-col items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
           <FileText className="w-8 h-8 text-primary" />
         </div>
+
         <div>
-          <p className="text-lg font-medium text-foreground mb-2">
+          <p className="text-lg font-medium mb-2">
             Upload or drag a file here
           </p>
           <p className="text-sm text-muted-foreground">
-            {supportedFormats}: max {maxSize}
+            {supportedFormats} • max {maxSize}
           </p>
-          <button className="text-xs text-primary hover:underline mt-1">
-            Supported file formats
-          </button>
         </div>
+
         <label htmlFor="file-upload">
-          <Button asChild className="cursor-pointer">
+          <Button asChild disabled={loading}>
             <span>
               <Upload className="w-4 h-4 mr-2" />
-              Upload to Summarize
+              {loading ? "Uploading..." : "Upload to Summarize"}
             </span>
           </Button>
         </label>
+
         <input
           id="file-upload"
           type="file"
           accept={accept}
-          multiple
           onChange={handleFileInput}
           className="hidden"
         />
