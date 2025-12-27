@@ -25,7 +25,7 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
 
       {/* NAVBAR LEFTSIDE */}
       {/* logo and sidebar togglebutton */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
 
         {/* toggle sidebar button */}
         <Button
@@ -36,6 +36,15 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
         >
           <Menu className="h-5 w-5" />
         </Button>
+
+        {/* 🔥 LOGO */}
+        <div>
+          <img
+            src="/omniagent-logo.png"
+            alt="OmniAgent Logo"
+            className="h-10 w-auto"
+          />
+        </div>
         <h1 className="text-xl font-bold text-foreground">OmniAgent</h1>
       </div>
 
