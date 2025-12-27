@@ -26,6 +26,9 @@ export const FileUploadZone = ({
 
     const files = Array.from(e.dataTransfer.files);
 
+    console.log("User uploaded file: ", files[0]["name"]);
+
+
     uploadFiles(files); // 🔥 send to backend
   };
 
