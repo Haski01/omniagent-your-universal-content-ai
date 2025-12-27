@@ -25,7 +25,7 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
 
       {/* NAVBAR LEFTSIDE */}
       {/* logo and sidebar togglebutton */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
 
         {/* toggle sidebar button */}
         <Button
